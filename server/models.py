@@ -1,9 +1,10 @@
+from flask.views import MethodView
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 
 db = SQLAlchemy()
 
-class Newsletter(db.Model, SerializerMixin):
+class Newsletter(db.Model, SerializerMixin, MethodView):
     __tablename__ = 'newsletters'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,3 +15,6 @@ class Newsletter(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Newsletter {self.title}, published at {self.published_at}.>'
+
+# Now you can use the `as_view` method on the `Newsletter` class
+newsletter_view = Newsletter.as_view('newsletter')
